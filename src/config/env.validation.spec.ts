@@ -33,4 +33,16 @@ describe('validate()', () => {
       }),
     ).toThrow();
   });
+
+  it.each([0, -1, 65536, 70000, 3.14])(
+    'rejects invalid port %s',
+    (port) => {
+      expect(() =>
+        validate({
+          PORT: String(port),
+          APP_CORS_ALLOWED_ORIGINS: 'http://localhost:3000',
+        }),
+      ).toThrow();
+    },
+  );
 });
