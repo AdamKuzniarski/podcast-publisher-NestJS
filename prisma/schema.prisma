@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum EpisodeStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+  PUBLISH_FAILED
+}
+
+enum AuditAction {
+  CREATED
+  UPDATED
+  DELETED
+  PUBLISHED
+  ARCHIVED
+  SCHEDULED
+}
+
+model AdminUser {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Podcast {
+  id            String    @id @default(uuid())
+  title         String
+  slug          String    @unique
+  description   String
+  coverImageUrl String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  episodes      Episode[]
+}
+
+model Episode {
+  id              String        @id @default(uuid())
+  podcastId       String
+  title           String
+  slug            String
+  description     String
+  audioUrl        String?
+  durationSeconds Int?
+  status          EpisodeStatus @default(DRAFT)
+  publishedAt     DateTime?
+  scheduledAt     DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  podcast         Podcast       @relation(fields: [podcastId], references: [id])
+
+  @@unique([podcastId, slug])
+}
+
+model AuditEvent {
+  id         String      @id @default(uuid())
+  action     AuditAction
+  entityType String
+  entityId   String
+  adminId    String?
+  createdAt  DateTime    @default(now())
+}
