@@ -14,7 +14,11 @@ describe('validate()', () => {
 
   it('rejects missing APP_CORS_ALLOWED_ORIGINS', () => {
     expect(() =>
-      validate({ DATABASE_URL: BASE.DATABASE_URL, NODE_ENV: 'development', PORT: '3000' }),
+      validate({
+        DATABASE_URL: BASE.DATABASE_URL,
+        NODE_ENV: 'development',
+        PORT: '3000',
+      }),
     ).toThrow();
   });
 
@@ -35,17 +39,10 @@ describe('validate()', () => {
   });
 
   it('rejects invalid NODE_ENV', () => {
-    expect(() =>
-      validate({ ...BASE, NODE_ENV: 'staging' }),
-    ).toThrow();
+    expect(() => validate({ ...BASE, NODE_ENV: 'staging' })).toThrow();
   });
 
-  it.each([0, -1, 65536, 70000, 3.14])(
-    'rejects invalid port %s',
-    (port) => {
-      expect(() =>
-        validate({ ...BASE, PORT: String(port) }),
-      ).toThrow();
-    },
-  );
+  it.each([0, -1, 65536, 70000, 3.14])('rejects invalid port %s', (port) => {
+    expect(() => validate({ ...BASE, PORT: String(port) })).toThrow();
+  });
 });
