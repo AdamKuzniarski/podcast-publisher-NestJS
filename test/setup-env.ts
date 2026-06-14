@@ -1,3 +1,8 @@
+import * as dotenv from 'dotenv';
+import * as path from 'path';
+
+dotenv.config({ path: path.resolve(__dirname, '.env.test') });
+
 process.env.NODE_ENV = 'test';
 process.env.PORT = '4000';
 process.env.APP_CORS_ALLOWED_ORIGINS = 'http://localhost:3000';
