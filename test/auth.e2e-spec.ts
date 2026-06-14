@@ -4,9 +4,10 @@ import * as request from 'supertest';
 import { createTestApp } from './utils/create-test-app';
 import { resetTestDatabase } from './utils/reset-test-database';
 import { PrismaService } from '../src/prisma/prisma.service';
-
-const TEST_EMAIL = 'admin@test.com';
-const TEST_PASSWORD = 'TestPassword123!';
+import {
+  TEST_ADMIN_EMAIL as TEST_EMAIL,
+  TEST_ADMIN_PASSWORD as TEST_PASSWORD,
+} from './utils/test-constants';
 
 describe('Auth (e2e)', () => {
   let app: INestApplication;
